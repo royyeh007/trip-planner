@@ -787,3 +787,47 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:none;bor
   .cardfab{padding:11px 14px}
 }
 @media print{.cardfab{display:none}}
+
+/* ---- 藥妝優惠券：附近的店＋直接顯示條碼 ---- */
+.coupons{display:grid;gap:12px;margin:0 0 16px}
+.coupons .note{margin:0}
+.coupons .note.warn{color:var(--amber)}
+.cpnear{display:grid;gap:8px}
+.cpnear>.btn{width:100%}
+.cpshops{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.cpshops li{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.cpshops li.none{opacity:.7}
+.cpshops .cpmain{display:grid;gap:1px;min-width:0;flex:1}
+.cpshops .cpmain b{font-family:var(--f-display);font-size:1.02rem;line-height:1.25}
+.cpshops .cpsub{font-size:.8rem;color:var(--muted)}
+.cpshops .cpwarn{font-size:.78rem;color:var(--amber)}
+.cpshops .cpact{display:flex;gap:6px;flex:none;flex-wrap:wrap;justify-content:flex-end}
+.cphead{margin:4px 0 0;font-size:.92rem;display:flex;align-items:baseline;gap:8px}
+.cphead small{color:var(--muted);font-weight:400;font-size:.78rem}
+.cpgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.cpcard{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:2px;align-content:start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-height:44px}
+.cpcard:hover,.cpcard:focus-visible{border-color:var(--pine);background:var(--pine-soft)}
+.cpcard:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+.cpcard b{font-family:var(--f-display);font-size:1rem;line-height:1.25}
+.cpcard .cpsign{font-size:.74rem;color:var(--muted)}
+.cpcard .cptiers{font-size:.8rem}
+.cpcard .cpuntil{font-size:.74rem;color:var(--muted)}
+.cpcard.gone{opacity:.6}
+.cpcard.gone .cpuntil{color:var(--amber)}
+.cpdialog{width:min(560px,calc(100vw - 24px))}
+.cpdialog .coupons{margin:0}
+/* 條碼畫面固定白底黑字：深色模式下掃描器也讀得到 */
+.cpview{position:fixed;inset:0;z-index:60;background:#fff;color:#111;display:flex;flex-direction:column;overflow:hidden}
+.cpview header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:max(10px,env(safe-area-inset-top,0px)) 12px 8px 16px;border-bottom:1px solid #ddd}
+.cpview h3{margin:0;font-family:var(--f-display);font-size:1.2rem;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.cpview h3 small{font-size:.8rem;font-weight:400;color:#555}
+.cpview header p{margin:2px 0 0;font-size:.86rem;color:#333}
+.cpview .x{all:unset;cursor:pointer;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:1.7rem;color:#333;flex:none}
+.cpview .x:hover,.cpview .x:focus-visible{background:#eee}
+.cpview .cpbody{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;display:grid;gap:10px;justify-items:center;align-content:start;padding:10px 12px max(16px,env(safe-area-inset-bottom,0px))}
+.cpview .cptip{margin:0;font-size:.84rem;color:#333;max-width:560px;width:100%}
+.cpview img{display:block;width:100%;max-width:560px;height:auto;touch-action:pinch-zoom pan-y pan-x}
+.cpview .note{color:#555;margin:0}
+.cpview .btn.big{margin-top:24px}
+@media (max-width:560px){.cpshops li{flex-wrap:wrap}.cpshops .cpact{width:100%;justify-content:stretch}.cpshops .cpact .btn{flex:1;justify-content:center;padding:10px 14px}}
+@media print{.coupons,.cpview{display:none}}

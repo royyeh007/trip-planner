@@ -18,6 +18,7 @@ import { Overview } from "./components/Overview";
 import { GuideView } from "./components/GuideView";
 import { CardsView } from "./components/CardsView";
 import { QuickPickFab } from "./components/QuickPick";
+import { CouponHost, openCoupons, useCouponsOn } from "./components/Coupons";
 import { Login } from "./components/Login";
 import { JoinTrip } from "./components/JoinTrip";
 import { TripPicker } from "./components/TripPicker";
@@ -174,6 +175,7 @@ function TripMenu() {
 
 function Main() {
   const { member, current, trip, viewFam, setViewFam } = useTrip();
+  const couponsOn = useCouponsOn();
   const fam = trip.families.find((f) => f.id === viewFam) ?? { id: viewFam, name: viewFam, label: viewFam || "我們家", flights: [] };
   const tripId = current?.id ?? "";
   const dayKey = `jp-day:${tripId}`;
@@ -278,6 +280,7 @@ function Main() {
             {!isViewer(member) && <a className="btn" href="#upload" aria-current={view === "upload" ? "page" : undefined}>↑ 上傳行程</a>}
             {(trip.info.length > 0 || !isViewer(member)) && <a className="btn" href="#info" aria-current={view === "info" ? "page" : undefined}>ⓘ 其他資訊</a>}
             <a className="btn" href="#cards" aria-current={view === "cards" ? "page" : undefined}>💳 信用卡</a>
+            {couponsOn && <button type="button" className="btn" onClick={() => openCoupons()}>💊 藥妝優惠券</button>}
             {member?.role === "admin" && <a className="btn" href="#admin" aria-current={view === "admin" ? "page" : undefined}>⚙ 管理</a>}
           </div>
         </header>
@@ -352,6 +355,7 @@ function Main() {
       </div>
       {!isViewer(member) && <ChatWidget />}
       <QuickPickFab />
+      <CouponHost />
       {selected && <DetailSheet {...selected} onClose={close} />}
       <Lightbox />
     </>

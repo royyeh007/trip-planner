@@ -2,10 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import type { ClipboardEvent, DragEvent, FormEvent } from "react";
 import type { InfoBlock, InfoPage } from "../data";
 import { Markdown, blocksToMd } from "../md";
+import { CouponList, useCouponsOn } from "./Coupons";
 import { invoke, supabase } from "../supabase";
 import { useTrip } from "../trip";
 
 const OPEN_KEY = "jp-info-open";
+/** The page that carries the live coupon list (nearby drugstores + barcode pictures) above its text. */
+const COUPON_PAGE = "drug-coupons";
 /** Jump to 其他資訊 and show this page (the chat's「存到其他資訊」uses it). Works whether or not the page is already open. */
 export function openInfoPage(id: string) {
   try { sessionStorage.setItem(OPEN_KEY, id); } catch { /* storage blocked */ }
@@ -215,6 +218,7 @@ export function InfoView() {
   const { trip, member, current, reload } = useTrip();
   const pages = trip.info;
   const editable = !!member && member.role !== "viewer";
+  const couponsOn = useCouponsOn();
   const [cur, setCur] = useState<string | null>(() => {
     try { const v = sessionStorage.getItem(OPEN_KEY); sessionStorage.removeItem(OPEN_KEY); return v; } catch { return null; }
   });
@@ -264,6 +268,7 @@ export function InfoView() {
                 </span>
               )}
             </div>
+            {page.id === COUPON_PAGE && couponsOn && <CouponList />}
             {page.body?.trim() ? <Markdown text={page.body} /> : (page.blocks ?? []).map((b, i) => <Block key={i} b={b} />)}
           </article>
         </>

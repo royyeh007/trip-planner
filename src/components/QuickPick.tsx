@@ -4,6 +4,7 @@ import type { Pick, StopKind } from "../cards";
 import { useNow } from "../now";
 import { useTrip } from "../trip";
 import { useRecommend } from "./CardPick";
+import { openCoupons, useCouponsOn } from "./Coupons";
 
 const ICON: Record<StopKind, string> = { food: "🍜", shop: "🛍", hotel: "🏨", move: "🚃", sight: "⛩" };
 const ORDER: StopKind[] = ["food", "shop", "hotel", "move", "sight"];
@@ -17,6 +18,7 @@ function QuickPickSheet({ onClose }: { onClose: () => void }) {
   const { current } = useTrip();
   const now = useNow();
   const closeRef = useRef<HTMLButtonElement>(null);
+  const couponsOn = useCouponsOn();
   // today's promotions while travelling, the first day's otherwise
   const date = current && now.date >= current.start_date && now.date <= current.end_date ? now.date : current?.start_date;
   useEffect(() => {
@@ -60,6 +62,7 @@ function QuickPickSheet({ onClose }: { onClose: () => void }) {
         </ul>
         <p className="note qptip">{KIND_TIP.shop}</p>
         <div className="actions">
+{couponsOn && <button type="button" className="btn" onClick={() => { onClose(); openCoupons(); }}>💊 藥妝優惠券</button>}
           <a className="btn" href="#cards" onClick={onClose}>我的信用卡 ›</a>
           <button type="button" className="btn primary" onClick={onClose}>知道了</button>
         </div>
