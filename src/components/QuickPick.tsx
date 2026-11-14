@@ -40,12 +40,14 @@ function QuickPickSheet({ onClose }: { onClose: () => void }) {
       <div className="dialog quickpick" role="dialog" aria-modal="true" aria-labelledby="qp-title">
         <header>
           <div>
-            <h3 id="qp-title">現在刷哪張？</h3>
-            <small>在{COUNTRY_NAME[r.dest]}，依你勾的 {r.mine.length} 張卡算。結帳幣別選當地貨幣。</small>
+            <h3 id="qp-title">捷徑</h3>
+            <small>{r.enabled ? `現在刷哪張：在${COUNTRY_NAME[r.dest]}，依你勾的 ${r.mine.length} 張卡算。結帳幣別選當地貨幣。` : "站在店門口最常用的東西。"}</small>
           </div>
           <button ref={closeRef} type="button" className="x" aria-label="關閉" onClick={onClose}>×</button>
         </header>
-        <ul className="qprows">
+        {couponsOn && <button type="button" className="btn big qpshort" onClick={() => { onClose(); openCoupons(); }}>💊 藥妝優惠券<small>出示條碼、找附近的店</small></button>}
+        {!r.enabled && <p className="note qptip">到 <a href="#cards" onClick={onClose}>💳 信用卡</a> 勾你有的卡{r.on ? "" : "並打開推薦開關"}，這裡就會列出吃飯、買東西、飯店、交通、門票各刷哪張。</p>}
+        {r.enabled && <ul className="qprows">
           {rows.map(({ k, top, fallback }) => top && (
             <li key={k} className={top.stale ? "stale" : ""}>
               <span className="qpk" aria-hidden="true">{ICON[k]}</span>
@@ -59,10 +61,9 @@ function QuickPickSheet({ onClose }: { onClose: () => void }) {
               <b className={`qpnet${top.net < 0 ? " neg" : ""}`}>{pct(top.net)}</b>
             </li>
           ))}
-        </ul>
-        <p className="note qptip">{KIND_TIP.shop}</p>
+        </ul>}
+        {r.enabled && <p className="note qptip">{KIND_TIP.shop}</p>}
         <div className="actions">
-{couponsOn && <button type="button" className="btn" onClick={() => { onClose(); openCoupons(); }}>💊 藥妝優惠券</button>}
           <a className="btn" href="#cards" onClick={onClose}>我的信用卡 ›</a>
           <button type="button" className="btn primary" onClick={onClose}>知道了</button>
         </div>
@@ -71,15 +72,17 @@ function QuickPickSheet({ onClose }: { onClose: () => void }) {
   );
 }
 
-/** Bottom-left floating button, shown whenever the person has cards and the switch is on. Opens the pocket card. */
+/** Bottom-left floating 「捷徑」 button: which card to pull out (when the person has cards and the switch is on) and, on a Japan trip, the drugstore coupons. */
 export function QuickPickFab() {
   const r = useRecommend();
   const [open, setOpen] = useState(false);
-  useEffect(() => { if (!r.enabled) setOpen(false); }, [r.enabled]);
-  if (!r.enabled) return null;
+  const couponsOn = useCouponsOn();
+  const show = r.enabled || couponsOn;
+  useEffect(() => { if (!show) setOpen(false); }, [show]);
+  if (!show) return null;
   return (
     <>
-      <button type="button" className="cardfab" onClick={() => setOpen(true)} aria-haspopup="dialog" aria-expanded={open} title="現在要買東西，刷哪張卡最划算">💳 刷哪張</button>
+      <button type="button" className="cardfab" onClick={() => setOpen(true)} aria-haspopup="dialog" aria-expanded={open} title="捷徑：現在刷哪張卡、藥妝優惠券">⚡ 捷徑</button>
       {open && <QuickPickSheet onClose={() => setOpen(false)} />}
     </>
   );

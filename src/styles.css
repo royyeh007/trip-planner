@@ -760,7 +760,7 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:none;bor
 .tag.cc.tw{color:var(--pine);background:var(--pine-soft);border-color:transparent}
 .catalog .catbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
 .catalog .catbar .modebar{margin-top:0}
-/* 「現在刷哪張」口袋卡 */
+/* 左下角「捷徑」小卡：現在刷哪張＋藥妝優惠券 */
 .cardfab{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:15;display:inline-flex;align-items:center;gap:6px;background:var(--surface);color:var(--ink);border:1.5px solid var(--pine);border-radius:999px;padding:11px 16px;font-weight:700;font-size:.92rem;box-shadow:var(--shadow);cursor:pointer}
 .cardfab:hover{transform:translateY(-1px);background:var(--pine-soft)}
 .quickpick{width:min(480px,calc(100vw - 24px));max-height:calc(100dvh - 32px);overflow:auto;padding:16px 16px 14px;gap:12px}
@@ -831,3 +831,5 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:none;bor
 .cpview .btn.big{margin-top:24px}
 @media (max-width:560px){.cpshops li{flex-wrap:wrap}.cpshops .cpact{width:100%;justify-content:stretch}.cpshops .cpact .btn{flex:1;justify-content:center;padding:10px 14px}}
 @media print{.coupons,.cpview{display:none}}
+.quickpick .qpshort{width:100%;justify-content:space-between;border-color:var(--pine)}
+.quickpick .qpshort small{font-weight:400;font-size:.78rem;color:var(--muted)}
